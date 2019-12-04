@@ -14,12 +14,13 @@ public class HashMapConvertor {
         if(keys.size() != values.size()){
             pairCheck = false;
         }
+        this.mapSize = keys.size();
         this.keys = keys;
         this.values = values;
     }
 
     public HashMap<String, Object> getHashMap(){
-        if(!pairCheck){
+        if(pairCheck){
             return null;
         }
         HashMap<String, Object> result = new HashMap<>();

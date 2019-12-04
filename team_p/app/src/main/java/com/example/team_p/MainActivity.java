@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    //키보드 제어
     public void keyboard_down(View view){
         imm.hideSoftInputFromWindow(et_login_email.getWindowToken(), 0);
         imm.hideSoftInputFromWindow(et_login_pwd.getWindowToken(), 0);

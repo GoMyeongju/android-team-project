@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +34,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Item_view extends AppCompatActivity {
 
@@ -44,12 +54,14 @@ public class Item_view extends AppCompatActivity {
 
     String data_path = "test";
     String img_path = "imgs/";
+    String img_download;
 
 
     TextView tv_title_view;
     TextView tv_text_view;
 
     ImageView iv_img_view;
+    TextView tv_img_view;
 
     Button btn_download;
 
@@ -62,6 +74,7 @@ public class Item_view extends AppCompatActivity {
         tv_text_view = findViewById(R.id.tv_text_view);
 
         iv_img_view = findViewById(R.id.iv_img_view);
+        tv_img_view = findViewById(R.id.tv_img_view);
 
         btn_download = findViewById(R.id.btn_download);
 
@@ -76,8 +89,7 @@ public class Item_view extends AppCompatActivity {
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadimg(img_path);
-
+                downloadimg();
             }
         });
 
@@ -95,6 +107,7 @@ public class Item_view extends AppCompatActivity {
                 Data_add data_add = dataSnapshot.getValue(Data_add.class);
                 tv_title_view.setText(data_add.title);
                 tv_text_view.setText(data_add.text);
+                tv_img_view.setText(data_add.img_name);
 
                 img_path = img_path + data_add.img_name;
 
@@ -134,6 +147,7 @@ public class Item_view extends AppCompatActivity {
            @Override
            public void onSuccess(Uri uri) {
                //Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+               img_download = uri.toString();
                Glide.with(getApplicationContext()).load(uri).into(iv_img_view);
            }
        }).addOnFailureListener(new OnFailureListener() {
@@ -146,27 +160,19 @@ public class Item_view extends AppCompatActivity {
     }
 
     //휴대폰 로컬 영역에 저장하기
-    public void downloadimg(String imgname) {
-        //이미지 경로
-        StorageReference imgRef = storage.getReference();
-        try {
-            //휴대폰 내에 경로 생성하여 jpg 형태로 이미지 저장.
-            final File localFile = File.createTempFile("test_images", "jpg");
-            imgRef.child(imgname).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(), "파일 저장 성공", Toast.LENGTH_SHORT).show();
+    public void downloadimg() {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), "파일 저장 실패", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        DownloadManager downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
+
+        Uri download_uri = Uri.parse(img_download);
+        DownloadManager.Request request = new DownloadManager.Request(download_uri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(getApplicationContext(), DIRECTORY_DOWNLOADS, tv_img_view.getText().toString());
+
+        downloadManager.enqueue(request);
+
+
     }
 
 }
