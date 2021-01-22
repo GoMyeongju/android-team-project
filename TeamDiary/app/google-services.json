@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "253848938781",
+    "firebase_url": "https://teamdiaryapp-b8d33.firebaseio.com",
+    "project_id": "teamdiaryapp-b8d33",
+    "storage_bucket": "teamdiaryapp-b8d33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253848938781:android:d64185c473ff263fad59f4",
+        "android_client_info": {
+          "package_name": "com.example.teamdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253848938781-joskee21n67u1p50c52mln7j8uclv0r6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.teamdiary",
+            "certificate_hash": "c8ad306724e8051f939c561dc8c51696c291a394"
+          }
+        },
+        {
+          "client_id": "253848938781-jrc2iu9d7gadsuesm21nd4j5pfc6e1k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiL029bm-ZEseUxlLljob0M-m1-CGQm9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253848938781-jrc2iu9d7gadsuesm21nd4j5pfc6e1k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
